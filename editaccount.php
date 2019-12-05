@@ -1,3 +1,22 @@
+<?php
+
+session_start();
+include_once("conexao.php");
+
+if (empty($_SESSION['logado'])) {
+  echo "<script> type='javascript'>alert('Acesso Negado!');";
+  echo "javascript:window.location='login.php';</script>";
+}
+
+//Dados
+$id = filter_input(INPUT_GET,'id',FILTER_SANITIZE_SPECIAL_CHARS);
+
+$sql = "SELECT * FROM usuarios WHERE id = '$id'";
+$resultado = mysqli_query($connect, $sql);
+$dados = mysqli_fetch_array($resultado);
+mysqli_close($connect);
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -395,19 +414,21 @@
 
             <fieldset>
             <div class="caixa1">
-            <form  action="cad2.php" method="POST" style="border: none; box-shadow: none;">
+            <form  action="controller/controller_update.php" method="POST" style="border: none; box-shadow: none;">
+
+                <input type="hidden" id="id" name="id" value="<?php echo $dados['id']; ?>">
                 
             <h1 style="box-shadow: none;">Informações Principais</h1>
-            <label for="nome" style="box-shadow: none !important;"><b>ID</b></label><br>
-            <input type="text" name="nome" placeholder="Enter ID" id="nome" style=" box-shadow: none !important;">
+            <label for="nome" style="box-shadow: none !important;"><b>Nome</b></label><br>
+            <input type="text" name="nome" placeholder="Seu Nome" id="nome" value="<?php echo $dados['nome']; ?>" style=" box-shadow: none !important;">
                 <br>
                 <br>
             <label for="email" style=" box-shadow: none !important;"><b>E-mail</b></label><br>
-            <input name="email" type="email" placeholder="Enter E-mail" id="email" style=" box-shadow: none !important;" >
+            <input name="email" type="email" placeholder="Enter E-mail" id="email" value="<?php echo $dados['email']; ?>" style=" box-shadow: none !important;" >
                 <br>
                 <br>
             <label for="usuario" style=" box-shadow: none !important;"><b>Nick-Name</b></label><br>
-            <input name="usuario" type="text" placeholder="Enter Nick-Name" id="usuario" style=" box-shadow: none !important;" >
+            <input name="usuario" type="text" placeholder="Enter Nick-Name" id="usuario" value="<?php echo $dados['usuario']; ?>" style=" box-shadow: none !important;" >
                 <br>
                 <br>
             <label for="senha" style=" box-shadow: none !important;"><b>Senha</b></label><br>

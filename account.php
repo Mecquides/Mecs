@@ -1,3 +1,20 @@
+<?php
+session_start();
+include_once("conexao.php");
+
+if (empty($_SESSION['logado'])) {
+  echo "<script> type='javascript'>alert('Acesso Negado!');";
+  echo "javascript:window.location='login.php';</script>";
+}
+
+//Dados
+$id = $_SESSION['id_usuario'];
+$sql = "SELECT * FROM usuarios WHERE id = '$id'";
+$resultado = mysqli_query($connect, $sql);
+$dados = mysqli_fetch_array($resultado);
+mysqli_close($connect);
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -466,47 +483,12 @@
 
     <!-- Menu -->
     <ul class="topnav">
-    <a href="homee.php"><img style="vertical-align: middle;" class="logo" src="img/HYDRA-WHITEE.png" alt="Hydra Games"></a>
+    <a href="home.php"><img style="vertical-align: middle;" class="logo" src="img/HYDRA-WHITEE.png" alt="Hydra Games"></a>
       <button class="openbtn" onclick="openNav()"><img src="img/12.png" alt="1" width="30px" height="30px"> </button>  
       <li class="right"><a href="account.php">Conta</a></li>
+      <li class="right"><a href="sair.php">Sair</a></li>
       <!-- PHP -->
       <?php
-      session_start();
-      include_once("conexao.php");
-
-         $sql = "SELECT * FROM usuarios;"; // sql para obter os dados que quer apresentar
-        $result = $conn->query($sql);
-
-        while($row = $result->fetch_assoc()) {
-          //echo "<pre>";
-      //var_dump($row);
-      //echo "</pre>";
-  
-      $nome = $row["nome"];
-      $usuario = $row["usuario"];
-      $email = $row['email'];
-      
-      
-
-      
-      // echo "<tr>";
-      // echo "<td>$id</td>";
-      // echo "<td>$nome</td>";
-      // echo "<td>$email</td>";
-      // echo "<td>$usuario</td>";
-      // echo "<td>$senha</td>";
-      // echo "</tr>";
-      
-    
-        $_SESSION["nome"] = $nome;
-        echo $nome;
-                
-        $_SESSION["usuario"] = $usuario;
-        echo  $usuario;
-
-        $_SESSION["email"] = $email;
-        echo $email;
-        }
 
         
       ?>
@@ -520,14 +502,20 @@
   <div class="card" id="card1">
  
    <h4>E-mail:</h4>
-    <a><h3><?php $email = $_SESSION["email"]; echo "$email"; ?></h3></a><br>
-    <h4>ID:</h4>
-    <a><h1><?php $nome = $_SESSION["nome"]; echo "$nome"; ?></h1></a><br>
-    <h4>Usuario:</h4>
-    <a><h1><?php $usuario = $_SESSION["usuario"]; echo "$usuario"; ?></h1></a><br>
+    <a><h3><?php echo $dados['email']; ?></h3></a><br>
+    <h4>Nome:</h4>
+    <a><h1><?php echo $dados['nome']; ?></h1></a><br>
+    <h4>Nome de Usuario:</h4>
+    <a><h1><?php echo $dados['usuario']; ?></h1></a><br>
     <p class="price">Hydra Profile</p>
     <p>Altere Suas Informações</p>
-    <a href="editaccount.php"><p><button>Editar Perfil</button></p></a>
+    <a href="editaccount.php?id=<?php echo $dados['id']; ?>"><p><button>Editar Perfil</button></p></a>
+    <a href="controller/controller_excluir.php?id=<?php echo $dados['id']; ?>"><p><button>Excluir Perfil</button></p></a>
+    <?php
+    if($dados['id'] == 9 and 1):
+      echo '<a href=add_jogo.php class=btn red><button>Adicionar Jogos</button></a>';
+    endif;
+    ?>
   </div>
 <!-- Fim Profile Card -->
 <br>

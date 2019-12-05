@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['logado'])) {
+    echo "<script> type='javascript'>alert('Acesso Negado!');";
+    echo "javascript:window.location='home.php';</script>";
+}
+
+?> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -393,28 +403,22 @@
             <h2>Insira Seus Dados</h2>
 
         <!-- Formulário -->
-        <?php
-			if(isset($_SESSION['msg'])){
-				echo $_SESSION['msg'];
-				unset($_SESSION['msg']);
-			}
-		?>
 
             <fieldset>
             <div class="caixa1">
-            <form  action="cad2.php" method="POST" style="border: none; box-shadow: none;">
+            <form  action="controller/controller_cadastro.php" method="POST" style="border: none; box-shadow: none;">
                 
             <h1 style="box-shadow: none;">Informações Principais</h1>
-            <label for="nome" style="box-shadow: none !important;"><b>ID</b></label><br>
-            <input type="text" name="nome" placeholder="Enter ID" id="nome" style=" box-shadow: none !important;">
+            <label for="nome" style="box-shadow: none !important;"><b>Nome</b></label><br>
+            <input type="text" name="nome" placeholder="Seu Nome:" id="nome" style=" box-shadow: none !important;" required="">
                 <br>
                 <br>
             <label for="email" style=" box-shadow: none !important;"><b>E-mail</b></label><br>
-            <input name="email" type="email" placeholder="Enter E-mail" id="email" style=" box-shadow: none !important;" >
+            <input name="email" type="email" placeholder="Enter E-mail" id="email" style=" box-shadow: none !important;" required="">
                 <br>
                 <br>
             <label for="usuario" style=" box-shadow: none !important;"><b>Nick-Name</b></label><br>
-            <input name="usuario" type="text" placeholder="Enter Nick-Name" id="usuario" style=" box-shadow: none !important;" >
+            <input name="usuario" type="text" placeholder="Enter Nick-Name" id="usuario" style=" box-shadow: none !important;" required="">
                 <br>
                 <br>
             <label for="senha" style=" box-shadow: none !important;"><b>Senha</b></label><br>
